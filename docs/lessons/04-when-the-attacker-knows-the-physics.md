@@ -181,9 +181,11 @@ accelerometers feel nothing), but the snapshot check does not use the INS, and t
 saw this pattern in training. A model that uses the INS as a witness over time, a Kalman filter,
 should do better: Lesson 5 tests that.
 
-For CPS-02 the consequence is concrete: the 0.1 should be replaced by a miss probability that
-depends on the attacker's reach, from 0 for crude attacks to about 0.5 for receivers-only spoofing
-and nearly 1 for a bus-level, fully consistent injection.
+For CPS-02 the consequence is concrete. There, the 0.1 gates only the GNSS spoofing path; the
+bus-injection path has no detection leaf, so injected messages are always accepted. Measured, the
+spoofing miss probability is about 0.5 for a snapshot check (worse than assumed), and the bus path's
+"always accepted" is right only for the fully consistent injection: crude bus injections are caught.
+Lesson 5 shows how an INS-aided filter changes the spoofing number.
 
 ## 6. Worked example
 
