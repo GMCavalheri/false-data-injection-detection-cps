@@ -53,7 +53,7 @@ false-data-injection-detection-cps/
 - [x] **Phase 3 — Physical-vs-FDI classification**: implement and train the classifier distinguishing the two anomaly classes.
 - [x] **Phase 4 — Adversarial robustness analysis**: systematically increase FDI sophistication, measure and document detection performance degradation.
 - [x] **Phase 5 — Cross-sensor consistency modeling**: implement the model-based consistency check as an additional feature/detection layer.
-- [ ] **Phase 6 — Documentation and publishing**: written explanation of the physical-vs-cyber distinction problem, with clear sourcing to public FDI detection research literature (e.g., power grid state estimation FDI research), visualizations of detection performance.
+- [x] **Phase 6 — Documentation and publishing**: written explanation of the physical-vs-cyber distinction problem, with clear sourcing to public FDI detection research literature (e.g., power grid state estimation FDI research), visualizations of detection performance.
 
 ## Validation Strategy
 - Baseline and classifier evaluated with standard metrics (precision/recall per class) on held-out synthetic scenarios not used in training.
