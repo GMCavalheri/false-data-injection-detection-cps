@@ -8,3 +8,4 @@ from __future__ import annotations
 
 TRAIN_SEEDS = range(0, 3000)
 TEST_SEEDS = range(1_000_000, 1_001_500)
+ROBUSTNESS_SEEDS = range(2_000_000, 2_000_300)
