@@ -93,11 +93,23 @@ def exact_mimic(seed: int) -> Scenario:
     return Scenario(seed=seed, label="fdi", anomaly=None, values=s.values, truth=s.truth)
 
 
+SPOOFER_REACH = {
+    # reach: (include_baro, include_ins)
+    "receivers": (False, False),
+    "bus": (True, True),
+    "bus, air data protected": (False, True),
+}
+
+
 def spoofer_variant(seed: int, reach: str) -> Scenario:
-    """An L3 drag-off by an attacker who reaches ``receivers`` only or the whole ``bus``."""
+    """An L3 drag-off by an attacker who reaches the ``receivers`` only, the whole ``bus``, or
+    the bus except the air data (``bus, air data protected``: the baro travels on a path the
+    attacker cannot write to)."""
     params, ranges = load_sensor_parameters(), load_anomaly_ranges()
-    on_bus = reach == "bus"
-    fdi = sample_fdi(_anomaly_rng(seed), params, ranges, 3, include_baro=on_bus, include_ins=on_bus)
+    include_baro, include_ins = SPOOFER_REACH[reach]
+    fdi = sample_fdi(
+        _anomaly_rng(seed), params, ranges, 3, include_baro=include_baro, include_ins=include_ins
+    )
     return make_scenario(seed, "fdi", anomaly=fdi, params=params)
 
 

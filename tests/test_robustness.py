@@ -145,3 +145,5 @@ def test_spoofer_reach() -> None:
     rf, bus = spoofer_variant(13, "receivers"), spoofer_variant(13, "bus")
     assert not rf.anomaly.include_ins and not rf.anomaly.include_baro
     assert bus.anomaly.include_ins and bus.anomaly.include_baro
+    guarded = spoofer_variant(13, "bus, air data protected")
+    assert guarded.anomaly.include_ins and not guarded.anomaly.include_baro
