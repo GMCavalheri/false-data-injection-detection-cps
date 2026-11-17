@@ -74,6 +74,9 @@ def test_data_driven_checks_learn_the_relations_and_catch_a_broken_one() -> None
     for name, a in alarms.items():
         assert hai.event_recall(a, label) == 1.0, name
         assert a[:900].mean() < 0.01, name  # quiet before the attack
+    # the broken relation is on tag 2 (the third kept tag): it dominates the residual
+    contrib = model.residual_contributions(test)[1000:1100].mean(axis=0)
+    assert contrib.shape == (5,) and int(np.argmax(contrib)) == 2
 
 
 def test_moving_average_and_events() -> None:

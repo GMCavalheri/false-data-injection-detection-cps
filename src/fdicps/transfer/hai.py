@@ -140,6 +140,11 @@ class DataDrivenConsistency:
             "dynamic (one-step innovation)": moving_average(innov),
         }
 
+    def residual_contributions(self, values: NDArray[np.float64]) -> NDArray[np.float64]:
+        """Squared static residual of every kept tag at every sample, shape (T, kept tags)."""
+        z = self._standardise(values)
+        return np.asarray((z - (z @ self.V) @ self.V.T) ** 2)
+
     def alarms(self, values: NDArray[np.float64]) -> dict[str, NDArray[np.bool_]]:
         return {k: np.asarray(v > self.thresholds[k]) for k, v in self.statistics(values).items()}
 
