@@ -51,7 +51,7 @@ false-data-injection-detection-cps/
 - [x] **Phase 1 — Dual anomaly data generation**: extend physics-based simulation to generate both genuine fault and synthetic FDI anomaly classes.
 - [x] **Phase 2 — Baseline anomaly detection**: implement and evaluate the naive undifferentiated anomaly detector, document its inability to distinguish cause.
 - [x] **Phase 3 — Physical-vs-FDI classification**: implement and train the classifier distinguishing the two anomaly classes.
-- [ ] **Phase 4 — Adversarial robustness analysis**: systematically increase FDI sophistication, measure and document detection performance degradation.
+- [x] **Phase 4 — Adversarial robustness analysis**: systematically increase FDI sophistication, measure and document detection performance degradation.
 - [ ] **Phase 5 — Cross-sensor consistency modeling**: implement the model-based consistency check as an additional feature/detection layer.
 - [ ] **Phase 6 — Documentation and publishing**: written explanation of the physical-vs-cyber distinction problem, with clear sourcing to public FDI detection research literature (e.g., power grid state estimation FDI research), visualizations of detection performance.
 
