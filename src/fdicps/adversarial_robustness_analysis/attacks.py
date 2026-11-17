@@ -74,18 +74,22 @@ def near_mimic(seed: int) -> Scenario:
     return make_scenario(seed, "fdi", anomaly=fdi, params=params)
 
 
-def exact_mimic(seed: int) -> Scenario:
-    """The effect of a receiver bias fault, produced by an attacker: identical telemetry
-    distribution to the fault, labelled FDI."""
+def receiver_bias_fault(seed: int) -> Scenario:
+    """A real receiver bias fault (a random receiver, onset, size and direction)."""
     params, ranges = load_sensor_parameters(), load_anomaly_ranges()
     rng = _anomaly_rng(seed)
     unit = ("gnss_1", "gnss_2")[int(rng.integers(2))]
     onset = int(rng.integers(params.onset_min, params.onset_max + 1))
-    signs = tuple(float(x) for x in rng.choice([-1.0, 1.0], size=2))
-    fault = PhysicalFault(
-        unit, "bias", onset, ranges["gnss_bias"].sample(rng), (signs[0], signs[1])
-    )
-    s = make_scenario(seed, "fault", anomaly=fault, params=params)
+    signs = rng.choice([-1.0, 1.0], size=2)
+    size = ranges["gnss_bias"].sample(rng)
+    fault = PhysicalFault(unit, "bias", onset, size, (float(signs[0]), float(signs[1])))
+    return make_scenario(seed, "fault", anomaly=fault, params=params)
+
+
+def exact_mimic(seed: int) -> Scenario:
+    """The effect of a receiver bias fault, produced by an attacker: the telemetry has the same
+    distribution as :func:`receiver_bias_fault`'s, but the label is FDI."""
+    s = receiver_bias_fault(seed)
     return Scenario(seed=seed, label="fdi", anomaly=None, values=s.values, truth=s.truth)
 
 

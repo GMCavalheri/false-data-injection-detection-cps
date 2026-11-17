@@ -51,4 +51,5 @@ def snapshot_scenario_detection(
         stats.ncx2.cdf(thresholds, dofs, np.maximum(lambdas, 1e-300)),
         1.0 - alpha,
     )
-    return float(-np.expm1(np.log(p_quiet).sum()))
+    # a test that alarms surely (p_quiet = 0) makes the scenario alarm surely: log(0) -> -inf
+    return float(-np.expm1(np.log(np.maximum(p_quiet, 1e-300)).sum()))
