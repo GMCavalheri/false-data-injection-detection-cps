@@ -15,7 +15,7 @@ exercises (answers included).
 
 | # | Lesson | You will learn | Key result |
 |---|---|---|---|
-| 1 | [Two kinds of wrong](01-two-kinds-of-wrong.md) | exact zero-order-hold kinematics, sizing noise from a 95 % figure, fault types, FDI levels, why $a = Hc$ leaves WLS residuals unchanged | a 413 m drag-off with a residual change of 5.6e-14 |
+| 1 | [Two kinds of wrong](01-two-kinds-of-wrong.md) | exact zero-order-hold kinematics, sizing noise from a 95 % figure, fault types, FDI levels, why $a = Hc$ leaves WLS residuals unchanged | a 413 m drag-off leaves the residual unchanged to rounding |
 | 2 | [The detector that can't say why](02-the-detector-that-cannot-say-why.md) | rate checks and their false-alarm budget, Isolation Forest, detection by family | AUC 0.85, but 0.197 as a test of "attack, not fault" |
 | 3 | [Reading physics in an anomaly](03-reading-physics-in-an-anomaly.md) | residuals that are N(0, 1) when healthy, telescoping window variances, gradient boosting, a 1-D CNN | faults 0.99, L0–L2 recognised 0.99–1.0, L3 called normal 0.992 |
 | 4 | [When the attacker knows the physics](04-when-the-attacker-knows-the-physics.md) | noncentral chi-square detection, the $(1-s)^2$ law, exact scenario false-alarm rates, the Bayes limit on mimicry | attribution breaks at $s$ = 0.8–0.9; an exact fault mimic is always called a fault |

@@ -28,7 +28,7 @@ derives each method.
 * A dissimilar sensor out of the attacker's reach protects exactly the directions it observes: a
   protected baro exposes every vertical bus-level drag-off and no along-track one.
 * On the IEEE 14-bus system, the same estimator code reproduces the stealthy-attack theorem
-  (residual change $5 \times 10^{-15}$) and the noncentral detection law (0.461 closed form, 0.463 Monte Carlo).
+  (residual change below $10^{-12}$, rounding level) and the noncentral detection law (0.461 closed form, 0.463 Monte Carlo).
 * On the public HAI testbed, data-driven versions of the two consistency checks catch all 5 attack
   events of test1 and 15 of 20 of test2 (per-second AUC 0.83 to 0.93); the longest false alarm is an
   operating point outside the training data.

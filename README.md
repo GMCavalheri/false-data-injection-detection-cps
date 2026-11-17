@@ -34,7 +34,7 @@ consistent) are injected with ground truth by construction. Every number is repr
 | What if the attacker copies a fault? | An exact copy is attributed to a fault every time, as Bayes' rule says any classifier must | [Lesson 4](docs/lessons/04-when-the-attacker-knows-the-physics.md) |
 | How often is a spoof missed? (CPS-02 assumed 0.1) | 0.51 with a snapshot cross-check, 0.03 with an INS-aided filter; about 1 for a bus-level consistent injection | [Lessons 4, 5](docs/lessons/05-state-estimation-as-a-lie-detector.md) |
 | What stops a fully consistent injection? | Only a sensor out of the attacker's reach, in the directions it observes: a protected baro exposes 100 % of vertical attacks and 1.3 % of along-track ones | [Lesson 5](docs/lessons/05-state-estimation-as-a-lie-detector.md) |
-| Does the stealthy-attack theorem hold on a power grid? | Yes: IEEE 14-bus, residual change 5e-15; noncentral detection law 0.461 closed form vs 0.463 Monte Carlo | [Lesson 5](docs/lessons/05-state-estimation-as-a-lie-detector.md) |
+| Does the stealthy-attack theorem hold on a power grid? | Yes: IEEE 14-bus, residual change at rounding level (below 1e-12); noncentral detection law 0.461 closed form vs 0.463 Monte Carlo | [Lesson 5](docs/lessons/05-state-estimation-as-a-lie-detector.md) |
 | Does detection transfer to a real ICS testbed? | Data-driven checks catch 5/5 and 15/20 attack events on HAI 21.03; the longest false alarm is an unseen operating point | [Lesson 6](docs/lessons/06-testing-on-someone-elses-plant.md) |
 
 The full write-up, with limits, is [`docs/report.md`](docs/report.md). What is and is not new

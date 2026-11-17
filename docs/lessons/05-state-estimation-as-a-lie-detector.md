@@ -99,7 +99,7 @@ P = FPF^{\top} - FPH^{\top}(HPH^{\top} + R)^{-1}HPF^{\top} + Q.
 ```
 
 The bias mode has almost no process noise, so convergence is slow: after 20 000 steps the
-recursion matches SciPy's `solve_discrete_are` to within $10^{-14}$ relative. In steady state the filter
+recursion matches SciPy's `solve_discrete_are` to rounding (relative gap below $10^{-12}$). In steady state the filter
 knows position to 0.41 m (along-track) and 0.43 m (vertical), against 3.3 m and 6.6 m for one
 receiver: the INS carries information forward that one snapshot does not have.
 

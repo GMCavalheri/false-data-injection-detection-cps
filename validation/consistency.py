@@ -33,6 +33,14 @@ FAR = 0.01
 REACHES = ("receivers", "bus", "bus, air data protected")
 
 
+ROUNDING = 1e-12  # rounding-level results differ between CPUs, so tables report the bound
+
+
+def below(x: float) -> str:
+    """A rounding-level quantity, reported as a bound that holds on every platform."""
+    return "below 1e-12" if x < ROUNDING else f"{x:.1e} (above 1e-12)"
+
+
 def r3(x: float) -> float:
     return round(float(x), 3)
 
@@ -71,7 +79,7 @@ def filter_validation(test: Dataset) -> str:
                 r3(sd[0]),
                 r3(sd[1]),
                 f"{sd[2]:.2e}",
-                f"{gap:.1e}",
+                below(gap),
             ]
         )
     return table(
@@ -82,7 +90,7 @@ def filter_validation(test: Dataset) -> str:
             "steady prior σ p (m)",
             "σ v (m/s)",
             "σ b (m/s²)",
-            "gap to DARE after 20 000 steps",
+            "relative gap to DARE after 20 000 steps",
         ],
         rows,
     )
@@ -216,7 +224,7 @@ def main() -> None:
         ["states n (bus angles, bus 1 reference)", model.n],
         ["rank of H", int(np.linalg.matrix_rank(model.H))],
         ["degrees of freedom of the bad-data test", model.dof],
-        ["largest residual change under a = Hc, c ~ N(0, 0.2²) rad", f"{stealth_gap:.1e}"],
+        ["largest residual change under a = Hc, c ~ N(0, 0.2²) rad", below(stealth_gap)],
     ]
     det_rows = []
     for label, meters, size in (
