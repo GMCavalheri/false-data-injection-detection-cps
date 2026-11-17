@@ -8,4 +8,4 @@ apart: a naive anomaly detector, a physics-informed classifier, a model-based co
 (weighted least squares and a Kalman filter) and an honest robustness analysis.
 """
 
-__version__ = "0.1.0"
+__version__ = "1.0.0"

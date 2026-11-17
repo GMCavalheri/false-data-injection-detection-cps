@@ -1,6 +1,6 @@
 [project]
 name = "fdicps"
-version = "0.1.0"
+version = "1.0.0"
 description = "Telling a broken sensor from a lying one: detecting false data injection versus genuine physical sensor faults in a synthetic GNSS/INS navigation chain, with an honest robustness analysis against increasingly physics-aware attacks."
 readme = "README.md"
 license = { text = "MIT" }
