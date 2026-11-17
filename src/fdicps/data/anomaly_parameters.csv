@@ -1,0 +1,14 @@
+name,low,high,unit,basis
+gnss_bias,15,60,m,assumption: receiver position step (multipath or a bad satellite in the solution)
+gnss_drift,0.2,1.0,m/s,assumption: receiver position ramp rate (slowly growing satellite error)
+ins_bias,0.02,0.10,m/s^2,assumption: accelerometer bias shift
+ins_drift,0.0005,0.002,m/s^3,assumption: accelerometer bias ramp rate
+baro_bias,10,50,m,assumption: static-port or calibration step
+baro_drift,0.05,0.30,m/s,assumption: altitude ramp from a slowly leaking or icing port
+noise_factor,3,8,-,assumption: noise standard deviation multiplied by this factor (degraded unit)
+common_mode_rate,0.05,0.30,m/s,assumption: shared slowly growing error on both receivers (ionospheric-like)
+common_mode_cap,10,30,m,assumption: saturation of the shared error
+fdi_offset,30,200,m,assumption: position offset the attacker wants to induce
+fdi_ramp,5,30,s,assumption: time the attacker takes to ramp the offset in (rate limiting)
+fdi_drag_acc,0.02,0.10,m/s^2,assumption: acceleration of a drag-off (spoofer walking the solution away)
+fdi_drag_duration,30,90,s,assumption: duration of the drag-off acceleration phase
