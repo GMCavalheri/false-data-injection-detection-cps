@@ -27,6 +27,7 @@ from fdicps.dual_anomaly_data_generation.parameters import (
     parameter_bases,
 )
 from fdicps.dual_anomaly_data_generation.scenarios import (
+    family,
     generate_dataset,
     make_scenario,
     sample_fdi,
@@ -274,3 +275,11 @@ def test_dataset_is_balanced_and_labelled() -> None:
     assert np.all(d.level[d.label != 2] == -1)
     assert np.all((d.onset[d.label != 0] >= P.onset_min) & (d.onset[d.label != 0] <= P.onset_max))
     assert d.values.shape == (120, P.n_steps, len(CHANNELS))
+
+
+def test_family_groups_units_and_axes() -> None:
+    assert family("gnss_1 bias") == "gnss bias"
+    assert family("baro stuck") == "baro stuck"
+    assert family("gnss common_mode") == "gnss common_mode"
+    assert family("L2 offset h") == "L2 offset"
+    assert family("normal") == "normal"

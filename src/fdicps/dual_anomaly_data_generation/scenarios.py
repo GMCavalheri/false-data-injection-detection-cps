@@ -62,6 +62,14 @@ class Scenario:
         return -1 if self.anomaly is None else self.anomaly.onset
 
 
+def family(subtype: str) -> str:
+    """Group a subtype for reporting: 'gnss_1 bias' -> 'gnss bias', 'L2 offset h' -> 'L2 offset'."""
+    words = subtype.split()
+    if words[0].startswith("L"):
+        return " ".join(words[:2])
+    return f"{words[0].rstrip('_12')} {words[1]}" if len(words) > 1 else subtype
+
+
 def _signs(rng: np.random.Generator) -> tuple[float, float]:
     s = rng.choice([-1.0, 1.0], size=2)
     return float(s[0]), float(s[1])

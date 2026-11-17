@@ -15,7 +15,7 @@ from fdicps import plotting
 from fdicps.dual_anomaly_data_generation.faults import PhysicalFault, affected_channels
 from fdicps.dual_anomaly_data_generation.fdi import FalseDataInjection, cps02_leaf
 from fdicps.dual_anomaly_data_generation.fdi import affected_channels as fdi_channels
-from fdicps.dual_anomaly_data_generation.scenarios import generate_dataset, make_scenario
+from fdicps.dual_anomaly_data_generation.scenarios import family, generate_dataset, make_scenario
 from fdicps.experiment import TEST_SEEDS, TRAIN_SEEDS
 
 from common import FIGURES, table, write_result
@@ -26,14 +26,6 @@ EXAMPLE_SEED = 1_000_007
 def _csv(name: str) -> list[dict[str, str]]:
     text = resources.files("fdicps.data").joinpath(name).read_text()
     return list(csv.DictReader(io.StringIO(text)))
-
-
-def family(subtype: str) -> str:
-    """'gnss_1 bias' -> 'gnss bias'; 'L2 offset h' -> 'L2 offset'."""
-    words = subtype.split()
-    if words[0].startswith("L"):
-        return " ".join(words[:2])
-    return f"{words[0].rstrip('_12')} {words[1]}" if len(words) > 1 else subtype
 
 
 def composition(train_subtypes: list[str], test_subtypes: list[str]) -> str:
