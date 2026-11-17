@@ -26,7 +26,8 @@ from fdicps.physical_vs_fdi_classification.sequence_model import SequenceClassif
 from common import FIGURES, table, write_result
 
 P = load_sensor_parameters()
-CNN_CONFIGS = ((15, "15 epochs"), (25, "25 epochs"))
+CNN_EPOCHS = 20
+CNN_SEEDS = range(5)
 
 
 def r3(x: float) -> float:
@@ -128,39 +129,35 @@ def main() -> None:
     )
 
     xtr, xte = prepare(train.values, P), prepare(test.values, P)
-    rows, cnn_preds = [], {}
-    for epochs, label in CNN_CONFIGS:
-        cnn = SequenceClassifier(epochs=epochs).fit_prepared(xtr, train.label)
-        yc = cnn.predict_prepared(xte)
-        cnn_preds[label] = yc
-        rec = precision_recall_fscore_support(test.label, yc, labels=[0, 1, 2], zero_division=0)[1]
-        rows.append(
-            [
-                f"1-D CNN, {label}",
-                r3(f1_score(test.label, yc, average="macro")),
-                *(r3(r) for r in rec),
-            ]
-        )
     rec = precision_recall_fscore_support(test.label, yhat, labels=[0, 1, 2], zero_division=0)[1]
-    rows.insert(
-        0,
-        [
-            "gradient boosting, physics features",
-            r3(f1_score(test.label, yhat, average="macro")),
-            *(r3(r) for r in rec),
-        ],
+    gbm_row = f1_score(test.label, yhat, average="macro"), *rec
+    runs = []
+    for seed in CNN_SEEDS:
+        cnn = SequenceClassifier(seed=seed, epochs=CNN_EPOCHS).fit_prepared(xtr, train.label)
+        yc = cnn.predict_prepared(xte)
+        rec = precision_recall_fscore_support(test.label, yc, labels=[0, 1, 2], zero_division=0)[1]
+        runs.append((f1_score(test.label, yc, average="macro"), *rec))
+    arr = np.array(runs)
+    rows = [["gradient boosting, physics features", *(r3(v) for v in gbm_row)]]
+    rows += [
+        [f"1-D CNN, seed {s}", *(r3(v) for v in run)]
+        for s, run in zip(CNN_SEEDS, runs, strict=True)
+    ]
+    rows.append([f"1-D CNN, mean of {len(runs)} seeds", *(r3(v) for v in arr.mean(axis=0))])
+    rows.append(
+        ["1-D CNN, standard deviation across seeds", *(r3(v) for v in arr.std(axis=0, ddof=1))]
     )
     write_result(
         "sequence_model",
         "Phase 3: the 1-D CNN on residual sequences, against gradient boosting",
         [
             (
-                "Test set (compared within a tolerance by the reproduce job)",
-                table(["model", "macro F1", "recall normal", "recall fault", "recall FDI"], rows),
-            ),
-            (
-                "Predicted class by anomaly family, CNN 25 epochs",
-                by_family(test.subtype, cnn_preds["25 epochs"]),
+                f"Test set ({CNN_EPOCHS} epochs per seed)",
+                table(["model", "macro F1", "recall normal", "recall fault", "recall FDI"], rows)
+                + "\nSmall floating-point differences between CPUs are amplified by training, so a "
+                "single seed's numbers are not reproducible across machines. The reproduce job "
+                "checks only the mean row, within 0.1 (about three standard errors of the "
+                "noisiest column).\n",
             ),
         ],
         script="classification",

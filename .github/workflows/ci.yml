@@ -57,8 +57,8 @@ jobs:
         run: uv run python validation/run_all.py
       - name: Exact results reproduce byte for byte
         run: git diff --exit-code -- validation/results ':(exclude)validation/results/sequence_model.md'
-      - name: The CNN's results reproduce within tolerance
-        run: uv run python validation/check_tolerant.py validation/results/sequence_model.md
+      - name: The CNN's mean over seeds reproduces within tolerance
+        run: uv run python validation/check_tolerant.py validation/results/sequence_model.md --rows "1-D CNN, mean" --tolerance 0.1
       - name: Every notebook executes
         run: uv run python notebooks/build_notebooks.py --check
 

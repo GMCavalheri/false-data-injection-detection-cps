@@ -4,8 +4,9 @@
 
 Everything except the 1-D CNN is exact or seeded and deterministic across machines, so a rerun
 reproduces those tables in ``validation/results/`` byte for byte; CI checks that with
-``git diff``. The CNN's table (``sequence_model.md``) is compared within a tolerance by
-``check_tolerant.py``, because PyTorch's CPU kernels can differ by instruction set. The HAI
+``git diff``. The CNN's table (``sequence_model.md``) reports five seeds: training amplifies the
+floating-point differences between CPUs, so CI compares only the mean over seeds, within a
+tolerance, with ``check_tolerant.py``. The HAI
 transfer needs the dataset (``uv run python -m fdicps.transfer.fetch``) and is skipped, by the
 script itself, when the files are absent, as they are in CI. Figures go to ``docs/figures/``
 (their pixels can differ slightly between platforms' font setups).
