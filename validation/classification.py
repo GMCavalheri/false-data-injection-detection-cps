@@ -53,6 +53,32 @@ def by_family(subtypes: list[str], yhat: np.ndarray) -> str:
     return table(["family", "scenarios", "→ normal", "→ fault", "→ FDI"], rows)
 
 
+SIGNATURE_FEATURES = (
+    "frozen baro",
+    "disagree max gnss.pos.x",
+    "disagree max gnss.pos.h",
+    "disagree max baro-gnss.pos.h",
+    "both receivers inconsistent x",
+    "both receivers inconsistent h",
+)
+
+
+def signatures(X: np.ndarray, subtypes: list[str]) -> str:
+    """Median of a few telling features per family, split by axis for FDI."""
+    names = feature_names()
+    cols = [names.index(f) for f in SIGNATURE_FEATURES]
+    groups: dict[str, list[int]] = defaultdict(list)
+    for i, st in enumerate(subtypes):
+        key = family(st) + (f" {st.split()[-1]}" if st.startswith("L") else "")
+        groups[key].append(i)
+    order = ["normal"] + sorted(k for k in groups if k != "normal" and not k.startswith("L"))
+    order += sorted(k for k in groups if k.startswith("L"))
+    rows = [
+        [k, *(round(float(v), 1) for v in np.median(X[groups[k]][:, cols], axis=0))] for k in order
+    ]
+    return table(["family", *SIGNATURE_FEATURES], rows)
+
+
 def confusion(y: np.ndarray, yhat: np.ndarray) -> str:
     cm = confusion_matrix(y, yhat, labels=[0, 1, 2])
     return table(["true \\ predicted", *LABELS], [[LABELS[i], *cm[i].tolist()] for i in range(3)])
@@ -93,6 +119,10 @@ def main() -> None:
             ("Confusion matrix", confusion(test.label, yhat)),
             ("Predicted class by anomaly family", by_family(test.subtype, yhat)),
             ("Attribution", attribution),
+            (
+                "Median signature by family (noise standard deviations or fraction frozen)",
+                signatures(Xte, test.subtype),
+            ),
             ("Most important features (permutation importance, test set)", importance),
         ],
     )
