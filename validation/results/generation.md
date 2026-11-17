@@ -65,19 +65,19 @@ Train seeds 0–2999, test seeds 1000000–1001499 (disjoint). One third normal,
 
 | family | channels touched (median) | max position change, median (m) | max (m) |
 |---|---|---|---|
-| L0 replace | 1 | 458.9 | 6722 |
+| L0 replace | 1 | 294.2 | 2871 |
 | L1 offset | 1 | 105.5 | 199 |
 | L2 offset | 2 | 118.2 | 199.3 |
 | L3 drag | 6 | 393.9 | 1166 |
 | baro bias | 1 | 37.23 | 49.26 |
 | baro drift | 1 | 20.71 | 43.22 |
 | baro noise | 1 | 37.09 | 78.81 |
-| baro stuck | 1 | 685.3 | 1869 |
+| baro stuck | 1 | 655.2 | 1869 |
 | gnss bias | 2 | 30.57 | 59.82 |
 | gnss common_mode | 4 | 16.66 | 29.57 |
 | gnss drift | 2 | 85.74 | 177.1 |
 | gnss noise | 4 | 97.87 | 160.6 |
-| gnss stuck | 4 | 3.433e+04 | 4.587e+04 |
+| gnss stuck | 4 | 3.254e+04 | 4.822e+04 |
 | ins bias | 2 | 0 | 0 |
 | ins drift | 2 | 0 | 0 |
 | ins noise | 2 | 0 | 0 |

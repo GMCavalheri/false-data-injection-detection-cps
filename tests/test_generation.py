@@ -15,7 +15,12 @@ from fdicps.dual_anomaly_data_generation.fdi import (
     cps02_leaf,
     injection,
 )
-from fdicps.dual_anomaly_data_generation.mission import integrate, mission_profile, transition
+from fdicps.dual_anomaly_data_generation.mission import (
+    MAX_ACCELERATION,
+    integrate,
+    mission_profile,
+    transition,
+)
 from fdicps.dual_anomaly_data_generation.parameters import (
     load_anomaly_ranges,
     load_sensor_parameters,
@@ -70,6 +75,7 @@ def test_truth_satisfies_the_kinematics_and_its_envelope() -> None:
         assert np.all((truth.v[:, 0] >= 180 - 1e-9) & (truth.v[:, 0] <= 250 + 1e-9))
         assert np.all(np.abs(truth.v[:, 1]) <= 15 + 1e-9)
         assert np.all(truth.p[:, 1] > 0)
+        assert np.abs(truth.a).max() <= MAX_ACCELERATION + 1e-12
 
 
 def test_sensor_noise_has_the_stated_standard_deviation() -> None:

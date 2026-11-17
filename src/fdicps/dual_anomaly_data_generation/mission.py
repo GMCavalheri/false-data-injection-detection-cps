@@ -13,7 +13,8 @@ in Phase 5, so the three agree to rounding error.
 The profile is a sequence of smooth manoeuvres: on each axis the velocity moves to a new
 target through a raised-cosine acceleration pulse, whose integral is exactly the velocity
 change. Ranges are assumptions chosen to look like a transport aircraft in climb, cruise or
-descent (along-track 180-250 m/s, vertical speed within +/-15 m/s).
+descent (along-track 180-250 m/s, vertical speed within +/-15 m/s, peak manoeuvre
+acceleration at most 1 m/s^2, about 0.1 g).
 """
 
 from __future__ import annotations
@@ -31,6 +32,7 @@ ALONG_SPEED = (180.0, 250.0)  # m/s, assumption
 VERTICAL_SPEED = (-15.0, 15.0)  # m/s, assumption
 START_ALTITUDE = (5000.0, 10000.0)  # m, assumption: stays positive for any vertical profile
 MAX_MANOEUVRES = 3
+MAX_ACCELERATION = 1.0  # m/s^2, assumption: peak of any manoeuvre pulse
 
 
 @dataclass(frozen=True)
@@ -83,11 +85,14 @@ def _pulse_profile(
     for i in range(k):
         length = int(rng.integers(20, min(60, slot) + 1))
         start = i * slot + int(rng.integers(0, slot - length + 1))
-        target = float(rng.uniform(*bounds))
-        dv = target - v
         # a(t) = A (1 - cos(2 pi s / L)) / 2 on samples s = 0..L-1 integrates to A L dt / 2
+        # (sum of the samples); the peak is dv max(shape) / (sum dt), so capping it at
+        # MAX_ACCELERATION bounds the reachable velocity change
         s = np.arange(length)
         shape = 0.5 * (1.0 - np.cos(2.0 * np.pi * (s + 0.5) / length))
+        reach = MAX_ACCELERATION * float(shape.sum()) * dt / float(np.max(shape))
+        target = float(rng.uniform(max(bounds[0], v - reach), min(bounds[1], v + reach)))
+        dv = target - v
         a[start : start + length] = dv * shape / (shape.sum() * dt)
         v = target
     return a

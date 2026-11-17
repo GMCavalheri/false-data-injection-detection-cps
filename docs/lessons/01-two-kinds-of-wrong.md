@@ -85,7 +85,9 @@ to rounding error, not to the accuracy of a discretisation.
 
 The flight segment is 300 s long. On each axis the velocity moves to up to three new targets
 through raised-cosine acceleration pulses, normalised so that each pulse integrates to
-exactly the velocity change it is meant to produce.
+exactly the velocity change it is meant to produce. Each target is drawn within reach of a
+pulse whose peak is at most 1 m/s² (about 0.1 g), so the segment looks like a transport
+aircraft's climb, cruise or descent rather than an aerobatic one.
 
 ### Sizing the noise
 
