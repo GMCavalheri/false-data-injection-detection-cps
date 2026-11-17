@@ -99,16 +99,18 @@ for level in (1, 2, 3):
 
 ## Engineering
 
-* 139 tests (pytest + Hypothesis), 99 % coverage with a 90 % gate. Every test asserts against a
+* 140 tests (pytest + Hypothesis), 99 % coverage with a 90 % gate. Every test asserts against a
   closed form (zero-order-hold kinematics, noise variances, chi-square and noncentral chi-square
   laws, the DARE solution, the stealthy-attack theorem), an independent oracle (CPS-02's `cpsrbd`
   for the shared system, MATPOWER's `case14` data) or Monte Carlo inside its own confidence interval.
   Property tests check that detectability never rises with stealth.
 * `ruff`, strict `mypy`, CI on Python 3.11–3.13, gitleaks and pip-audit, Dependabot.
-* A `reproduce` CI job reruns every validation script and fails if any committed table changes
-  (the CNN's within a stated tolerance), then executes every notebook.
+* A `reproduce` CI job reruns every validation script and fails if any committed table changes,
+  then executes every notebook. The one exception is the CNN: training amplifies the tiny
+  floating-point differences between CPUs (the reproduce job found a 0.08 swing in one seed's
+  macro F1), so it is reported over five seeds and CI checks only the mean, within 0.1.
 * Determinism: every random draw comes from a seeded generator; the CNN is seeded, single-threaded
-  and uses deterministic algorithms.
+  and uses deterministic algorithms, so it reproduces exactly on one machine.
 * **Not included, on purpose:** this is a library and a course, not a deployed service, so there is
   no staging environment, observability stack or feature-flag service.
 

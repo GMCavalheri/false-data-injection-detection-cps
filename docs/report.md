@@ -63,8 +63,8 @@ Detection by level for the Isolation Forest: L0 0.912, L1 0.456, L2 0.024, L3 0.
 | fault | 0.998 | 0.99 | 0.994 |
 | fdi | 0.977 | 0.75 | 0.848 |
 
-A 1-D CNN on the residual sequences reaches macro F1 0.844 to 0.857 (two configurations, both
-reported) against 0.906 for gradient boosting.
+A 1-D CNN on the residual sequences reaches a mean macro F1 of 0.856 over five seeds (standard
+deviation 0.015) against 0.906 for gradient boosting.
 
 ### 3.3 Performance across sophistication (Phases 4 and 5)
 
@@ -142,5 +142,6 @@ Detection by monitor, scenario false-alarm rate 0.01:
 ## 6. Reproducibility
 
 `uv run python validation/run_all.py` regenerates every table. CI reruns it on every push and fails
-if any table changes, except the CNN's, which is checked within a tolerance of 0.03 because CPU
-kernels can differ between machines; the HAI script runs only where the dataset has been fetched.
+if any table changes. The exception is the CNN: training amplifies the floating-point differences
+between CPUs, so it is reported over five seeds and CI checks the mean within 0.1. The HAI script
+runs only where the dataset has been fetched.

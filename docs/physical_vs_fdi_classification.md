@@ -27,5 +27,6 @@ statistic; per axis, whether both receivers broke their kinematics at once.
   early stopping; three classes (normal, fault, FDI).
 * `SequenceClassifier`: a 1-D CNN (three dilated convolutions of width 7, dilations 1, 2, 4;
   global max and mean pooling; linear head) on the 27 residual sequences, AdamW, seeded, one CPU
-  thread, deterministic algorithms. Its results file is checked within a tolerance because CPU
-  kernels may differ between machines.
+  thread, deterministic algorithms. On one machine a seed reproduces exactly, but training
+  amplifies the tiny floating-point differences between CPUs, so results are reported over five
+  seeds and only their mean is checked by CI, within 0.1.

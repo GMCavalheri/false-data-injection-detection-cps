@@ -191,15 +191,24 @@ max and mean pooling then feed a linear layer with three outputs. It is trained 
 | model | macro F1 | recall normal | recall fault | recall FDI |
 |---|---|---|---|---|
 | gradient boosting, physics features | 0.906 | 0.982 | 0.99 | 0.75 |
-| 1-D CNN, 15 epochs | 0.844 | 0.864 | 0.876 | 0.786 |
-| 1-D CNN, 25 epochs | 0.857 | 0.896 | 0.9 | 0.772 |
+| 1-D CNN, mean of 5 seeds | 0.856 | 0.88 | 0.93 | 0.759 |
+| 1-D CNN, standard deviation across seeds | 0.015 | 0.069 | 0.024 | 0.012 |
 
-Two configurations were tried, and both are reported because the test set was looked at
-between them; neither was tuned further. The CNN's slightly higher FDI recall comes with many
-more false alarms (one normal scenario in ten called FDI) and with baro faults confused for
-attacks. On 3000 scenarios, the hand-made summaries carry the physics more efficiently than
-filters learned from scratch. This is not a benchmark of CNNs in general: with more data, or with
-the summaries as extra inputs, the comparison could change.
+Each seed trains for 20 epochs; the per-seed rows are in the results file. Three lessons came out
+of this comparison, two of them about method rather than models:
+
+* **The hand-made summaries win on 3000 scenarios.** The CNN's mean macro F1 is 0.05 below gradient
+  boosting's, about three of its seed-to-seed standard deviations, and its normal-class recall
+  varies most (0.76 to 0.93 across seeds): it confuses normal flight with attacks more often. Filters
+  learned from scratch do not recover the physics summaries' efficiency at this data size. That is
+  not a verdict on CNNs in general: more data, or the summaries as extra inputs, could change it.
+* **One run of a neural network is an anecdote.** An earlier version of this lesson compared single
+  runs of two configurations; their difference was within the seed-to-seed spread measured here.
+* **Determinism on one machine is not reproducibility.** Seeded, single-threaded and with PyTorch's
+  deterministic algorithms, a seed gives identical weights on one machine every time. Yet the
+  reproduce job's log showed the earlier 25-epoch configuration, same seed, scoring a macro F1 of
+  0.774 on the CI runner against 0.857 here: the CPU kernels round differently, and training
+  amplifies the difference. So the CNN is reported over seeds, and CI checks only the mean.
 
 ## 6. What is physics and what is assumption
 
