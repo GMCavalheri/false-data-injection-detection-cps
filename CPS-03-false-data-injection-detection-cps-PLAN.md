@@ -48,7 +48,7 @@ false-data-injection-detection-cps/
 ```
 
 ## Execution Plan
-- [ ] **Phase 1 — Dual anomaly data generation**: extend physics-based simulation to generate both genuine fault and synthetic FDI anomaly classes.
+- [x] **Phase 1 — Dual anomaly data generation**: extend physics-based simulation to generate both genuine fault and synthetic FDI anomaly classes.
 - [ ] **Phase 2 — Baseline anomaly detection**: implement and evaluate the naive undifferentiated anomaly detector, document its inability to distinguish cause.
 - [ ] **Phase 3 — Physical-vs-FDI classification**: implement and train the classifier distinguishing the two anomaly classes.
 - [ ] **Phase 4 — Adversarial robustness analysis**: systematically increase FDI sophistication, measure and document detection performance degradation.
